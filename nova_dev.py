@@ -32,3 +32,12 @@ credentials = get_nova_credentials_v2()
 nova_client = Client(**credentials)
 
 print(nova_client.servers.list())
+
+image = nova_client.images.find(name="phusion/baseimage")
+flavor = nova_client.flavors.find(name="m1.tiny")
+net = nova_client.networks.find(label="private")
+
+nics = [{'net-id': net.id}]
+instance = nova_client.servers.create(name="container1", image=image, flavor=flavor, nics=nics)
+print("VMs:")
+print(nova_client.servers.list())
