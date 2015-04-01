@@ -8,6 +8,8 @@ from keystoneclient.v2_0 import client
 import glanceclient.v2.client as glclient
 #from credentials import get_nova_credentials_v2
 from novaclient.client import Client
+import os
+import time
 keystone = client.Client(auth_url=env['OS_AUTH_URL'],#keystone service endpoint for authorisation
 			username=env['OS_USERNAME'], #username for auth
 			password=env['OS_PASSWORD'], #password for auth
@@ -33,11 +35,28 @@ nova_client = Client(**credentials)
 
 print(nova_client.servers.list())
 
-image = nova_client.images.find(name="phusion/baseimage")
+image = nova_client.images.find(name="phusion/passenger-full")
 flavor = nova_client.flavors.find(name="m1.tiny")
 net = nova_client.networks.find(label="private")
 
 nics = [{'net-id': net.id}]
-instance = nova_client.servers.create(name="container1", image=image, flavor=flavor, nics=nics)
+instance = nova_client.servers.create(name="webserver", image=image, flavor=flavor, nics=nics)
 print("VMs:")
 print(nova_client.servers.list())
+time.sleep(30)
+os.system("docker ps")
+dockerid = raw_input('Docker ID: ')
+os.system("docker exec -t -i " + dockerid + " rm -f /etc/service/nginx/down")
+os.system("docker exec -t -i " +  dockerid + " service nginx start")
+
+instance = nova_client.servers.create(name="client", image=image, flavor=flavor, nics=nics)
+print("VMs:")
+print(nova_client.servers.list())
+time.sleep(30)
+os.system("docker ps")
+dockerid = raw_input('Docker ID: ')
+os.system("nova list")
+webserverip = raw_input("IP Address: ")
+os.system("docker exec -t -i " + dockerid + " wget " + webserverip)
+
+
