@@ -14,10 +14,10 @@
  
 ##Step 2: Devstack Configuration
 *Create a new user stack; 
-'<adduser stack>'
+    adduser stack
 *Give stack sudo privileges: 
-'<apt-get install sudo -y || yum install -y sudo>'
-'<echo "stack ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers>'
+    apt-get install sudo -y || yum install -y sudo
+    echo "stack ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 *Change to user stack and start the devstack pull and install
 
 '<sudo apt-get install git -y || sudo yum install -y git>'
