@@ -1,0 +1,48 @@
+net = nova_client.networks.find(label="private")#network for VM
+flavor = nova_client.flavors.find(name="m1.tiny")#flavor for VM
+keystone = client.Client(auth_url=env['OS_AUTH_URL'],#keystone service endpoint for authorisation
+os.system("source openrc")
+os.system("docker ps")
+	d['auth_url'] = env['OS_AUTH_URL']
+os.system("docker exec -t -i " + dockerid + " rm -f /etc/service/nginx/down")#logs into docker instancs and starts nginx
+			tenant_name=env['OS_TENANT_NAME']) #tenant name
+#Author: Sophie Renshaw 20052994
+from keystoneclient.v2_0 import client
+webserverip = raw_input("IP Address: ")
+	d['version'] = '2'
+	d = {}
+#!/usr/bin/python
+def get_nova_credentials_v2():
+nics = [{'net-id': net.id}]#network interfaces for VM
+os.system("docker exec -t -i " +  dockerid + " service nginx start")#logs into docker and starts nginx
+#Sample solution for the Nova Lab Exercise
+	d['project_id'] = env['OS_TENANT_NAME']
+			username=env['OS_USERNAME'], #username for auth
+instance = nova_client.servers.create(name="webserver", image=image, flavor=flavor, nics=nics)
+#Date: 30/03/2015
+	return d
+glance_endpoint = keystone.service_catalog.url_for(service_type ='image')
+time.sleep(60)
+os.system("docker exec -t -i " + dockerid + " ping -c4 " + webserverip)#runs command on the client lxc to ping webserver
+nova_client = Client(**credentials)
+os.system("docker ps")#lists instances running
+	d['username'] = env['OS_USERNAME']
+print("Waiting for container")
+dockerid = raw_input('Docker ID: ')
+glance = glclient.Client(glance_endpoint, token=keystone.auth_token)
+	d['api_key'] = env['OS_PASSWORD']
+import glanceclient.v2.client as glclient
+import os
+credentials = get_nova_credentials_v2()
+os.system("nova list")#lists nova instance list
+print("VMs:")
+images = glance.images.list()#gets image list
+import time
+#print list(images)
+from novaclient.client import Client
+image = nova_client.images.find(name="phusion/passenger-full")#image for VM
+print(nova_client.servers.list())#prints a list of Instances
+print(nova_client.servers.list())
+			password=env['OS_PASSWORD'], #password for auth
+from os import environ as env
+instance = nova_client.servers.create(name="client", image=image, flavor=flavor, nics=nics)#creates second instance
